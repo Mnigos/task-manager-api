@@ -1,9 +1,5 @@
-import { Schema, model, Document } from 'mongoose';
-
-export interface ITask extends Document {
-  name: string;
-  createdAt: Date;
-}
+import { Schema, model } from 'mongoose';
+import { TaskDoc } from '../dto/task-doc.interface';
 
 export const TaskSchema = new Schema({
   name: { type: String, required: true },
@@ -13,6 +9,6 @@ export const TaskSchema = new Schema({
   },
 });
 
-const Task = model<ITask>('Task', TaskSchema);
+const Task = model<TaskDoc>('Task', TaskSchema);
 
 export default Task;
