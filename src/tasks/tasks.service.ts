@@ -17,7 +17,7 @@ export class TasksService {
     return tasks;
   }
 
-  async getOneById(_id) {
+  async getOneById(_id: string) {
     const task = await this.TaskModel.findOne({ _id }).exec();
 
     if (!task) return HttpStatus.BAD_REQUEST;
@@ -25,7 +25,7 @@ export class TasksService {
     return task;
   }
 
-  async getOneByName(name) {
+  async getOneByName(name: string) {
     const task = await this.TaskModel.findOne({ name }).exec();
 
     if (!task) return HttpStatus.BAD_REQUEST;
