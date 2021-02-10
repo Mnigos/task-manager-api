@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { Task } from './dto/task.interface';
+import { ITask } from './dto/task.interface';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -17,7 +17,7 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  async getAll(): Promise<Task[]> {
+  async getAll(): Promise<ITask[]> {
     return this.tasksService.getAll();
   }
 
@@ -32,7 +32,7 @@ export class TasksController {
   }
 
   @Post('/new')
-  async create(@Body() task: CreateTaskDto): Promise<Task> {
+  async create(@Body() task: CreateTaskDto): Promise<ITask> {
     return this.tasksService.create(task);
   }
 

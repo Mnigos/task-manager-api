@@ -2,7 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TaskDoc } from './dto/task-doc.interface';
-import { Task } from './dto/task.interface';
+import { ITask } from './dto/task.interface';
 
 @Injectable()
 export class TasksService {
@@ -10,7 +10,7 @@ export class TasksService {
     @InjectModel('Tasks') private readonly TaskModel: Model<TaskDoc>
   ) {}
 
-  async getAll(): Promise<Task[]> {
+  async getAll(): Promise<ITask[]> {
     const tasks = await this.TaskModel.find().exec();
     return tasks;
   }
@@ -31,12 +31,12 @@ export class TasksService {
     return task;
   }
 
-  async create(task: Task): Promise<Task> {
-    const newTask = await this.TaskModel.create(task as Task);
+  async create(task: ITask): Promise<ITask> {
+    const newTask = await this.TaskModel.create(task as ITask);
     return newTask;
   }
 
-  async update(task: Task) {
+  async update(task: ITask) {
     const { _id } = task;
 
     if (!_id) return HttpStatus.BAD_REQUEST;
