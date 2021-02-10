@@ -6,10 +6,8 @@ import { Task } from './dto/task.interface';
 
 @Injectable()
 export class TasksService {
-  private readonly Tasks: Task[] = [];
-
   constructor(
-    @InjectModel('Task') private readonly TaskModel: Model<TaskDoc>
+    @InjectModel('Tasks') private readonly TaskModel: Model<TaskDoc>
   ) {}
 
   async getAll(): Promise<Task[]> {
