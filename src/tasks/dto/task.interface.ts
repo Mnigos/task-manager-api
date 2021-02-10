@@ -1,4 +1,4 @@
-export interface Task {
+export interface ITask {
   _id?: string;
   name: string;
   createdAt?: Date;
