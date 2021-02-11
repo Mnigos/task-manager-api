@@ -2,10 +2,14 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { IUser } from 'src/users/dto/user.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService
+  ) {}
 
   async validateUser(user: IUser): Promise<any> {
     const { name, pass } = user;
@@ -24,5 +28,13 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  async login(user: IUser): Promise<any> {
+    const { name, _id } = user;
+
+    return {
+      access_token: this.jwtService.sign({ name, sub: _id }),
+    };
   }
 }
