@@ -30,4 +30,9 @@ export class UsersService {
 
     return user;
   }
+
+  async create(user: IUser): Promise<IUser> {
+    const newUser = await this.UserModel.create(user as IUser);
+    return newUser;
+  }
 }
