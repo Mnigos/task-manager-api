@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface TaskDoc extends Document {
+export interface UserDoc extends Document {
   name: string;
   pass: string;
   createdAt?: Date;
