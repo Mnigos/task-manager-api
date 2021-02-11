@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDoc } from './dto/user-doc.interface';
@@ -13,5 +13,13 @@ export class UsersService {
   async getAll(): Promise<IUser[]> {
     const users = await this.UserModel.find().exec();
     return users;
+  }
+
+  async getOneById(_id: string) {
+    const user = await this.UserModel.findOne({ _id }).exec();
+
+    if (!user) return HttpStatus.BAD_REQUEST;
+
+    return user;
   }
 }
