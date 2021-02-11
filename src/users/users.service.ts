@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDoc } from './dto/user-doc.interface';
 import { IUser } from './dto/user.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -31,8 +32,17 @@ export class UsersService {
     return user;
   }
 
-  async create(user: IUser): Promise<IUser> {
-    const newUser = await this.UserModel.create(user as IUser);
-    return newUser;
+  async create(user: IUser): Promise<boolean> {
+    const { name, pass } = user;
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(pass, salt);
+
+    await this.UserModel.create({
+      name,
+      pass: hash,
+    } as IUser);
+
+    return true;
   }
 }
