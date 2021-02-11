@@ -22,4 +22,12 @@ export class UsersService {
 
     return user;
   }
+
+  async getOneByName(name: string) {
+    const user = await this.UserModel.findOne({ name }).exec();
+
+    if (!user) return HttpStatus.BAD_REQUEST;
+
+    return user;
+  }
 }
