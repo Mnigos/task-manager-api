@@ -37,4 +37,8 @@ export class AuthService {
       access_token: this.jwtService.sign({ name, sub: _id }),
     };
   }
+
+  async register(user: IUser): Promise<any> {
+    return await this.usersService.create(user);
+  }
 }
