@@ -9,4 +9,9 @@ export class UsersService {
   constructor(
     @InjectModel('Users') private readonly UserModel: Model<UserDoc>
   ) {}
+
+  async getAll(): Promise<IUser[]> {
+    const users = await this.UserModel.find().exec();
+    return users;
+  }
 }
