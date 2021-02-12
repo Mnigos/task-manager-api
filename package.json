@@ -2,8 +2,8 @@
   "name": "task-manager-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
-  "private": true,
+  "author": "mnigos",
+  "private": false,
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
