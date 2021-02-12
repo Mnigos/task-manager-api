@@ -105,4 +105,16 @@ describe('Users Service', () => {
     const foundUser = await usersService.getOneById('a uuid');
     expect(foundUser).toEqual(findMockUser);
   });
+
+  it('Should return one user by name', async () => {
+    jest.spyOn(usersModel, 'findOne').mockReturnValueOnce(
+      createMock<DocumentQuery<UserDoc, UserDoc>>({
+        exec: jest.fn().mockResolvedValueOnce(mockUserDoc()),
+      })
+    );
+
+    const findMockUser = mockUser();
+    const foundUser = await usersService.getOneByName('some name');
+    expect(foundUser).toEqual(findMockUser);
+  });
 });
