@@ -138,4 +138,38 @@ describe('Tasks Service', () => {
       name: 'some name',
     });
   });
+
+  it.skip('Should update a task', async () => {
+    jest.spyOn(tasksModel, 'update').mockReturnValue(
+      createMock<DocumentQuery<TaskDoc, TaskDoc>>({
+        exec: jest
+          .fn()
+          .mockResolvedValueOnce(mockTaskDoc({ name: 'some other name' })),
+      })
+    );
+
+    const updatedTask = await tasksService.update({
+      userId: 'a user id',
+      _id: 'a uuid',
+      name: 'some other name',
+    });
+    expect(updatedTask).toEqual(
+      mockTask('a user id', 'a uuid', 'some other name')
+    );
+  });
+
+  it('should delete a cat successfully', async () => {
+    jest.spyOn(tasksModel, 'remove').mockResolvedValueOnce(true as any);
+    expect(await tasksService.delete('a bad id')).toEqual({ deleted: true });
+  });
+
+  it('should not delete a cat', async () => {
+    jest
+      .spyOn(tasksModel, 'remove')
+      .mockRejectedValueOnce(new Error('Bad delete'));
+    expect(await tasksService.delete('a bad id')).toEqual({
+      deleted: false,
+      message: 'Bad delete',
+    });
+  });
 });
