@@ -114,7 +114,7 @@ describe('Tasks Service', () => {
     );
 
     const findMockTask = mockTask();
-    const foundTask = await tasksService.getOneById('some name');
+    const foundTask = await tasksService.getOneByName('some name');
     expect(foundTask).toEqual(findMockTask);
   });
 
