@@ -3,9 +3,8 @@ import { UsersService } from './users.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { IUser } from './dto/user.interface';
 import { createMock } from '@golevelup/nestjs-testing';
-import { Model, Query } from 'mongoose';
+import { DocumentQuery, Model } from 'mongoose';
 import { UserDoc } from './dto/user-doc.interface';
-import { Provider } from '@nestjs/common';
 
 const mockUser: (id?: string, name?: string, pass?: string) => IUser = (
   id = 'a uuid',
@@ -84,5 +83,13 @@ describe('Users Service', () => {
     jest.spyOn(usersModel, 'find').mockReturnValue({
       exec: jest.fn().mockResolvedValueOnce(mockUserDocArray),
     } as any);
+  });
+
+  it('Should return one user by id', async () => {
+    jest.spyOn(usersModel, 'findOne').mockReturnValueOnce(
+      createMock<DocumentQuery<UserDoc, UserDoc>>({
+        exec: jest.fn().mockResolvedValueOnce(mockUserDoc()),
+      })
+    );
   });
 });
