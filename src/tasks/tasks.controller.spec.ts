@@ -5,11 +5,6 @@ import { ITask } from './dto/task.interface';
 import { TaskDoc } from './dto/task-doc.interface';
 import { CreateTaskDto } from './dto/create-task.dto';
 
-const mockUser: ITask = {
-  userId: 'some user id',
-  name: 'some name',
-};
-
 describe('Tasks Controller', () => {
   let tasksController: TasksController;
 
@@ -88,7 +83,19 @@ describe('Tasks Controller', () => {
     ]);
   });
 
-  it('Should return one task by id', () => {
+  it('Should create new task', () => {
+    const newTask: CreateTaskDto = {
+      userId: 'some user id',
+      name: 'some name',
+    };
+
+    expect(tasksController.create(newTask)).resolves.toEqual({
+      _id: 'a uuid',
+      ...newTask,
+    });
+  });
+
+  it('Should update an existing task', () => {
     const newTask: CreateTaskDto = {
       userId: 'some user id',
       name: 'some name',
