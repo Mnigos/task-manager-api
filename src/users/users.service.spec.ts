@@ -77,4 +77,12 @@ describe('Users Service', () => {
     usersService = usersModule.get<UsersService>(UsersService);
     usersModel = usersModule.get<Model<UserDoc>>(getModelToken('Users'));
   });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('Should be defined', () => {
+    expect(usersService).toBeDefined();
+  });
 });
