@@ -117,4 +117,20 @@ describe('Users Service', () => {
     const foundUser = await usersService.getOneByName('some name');
     expect(foundUser).toEqual(findMockUser);
   });
+
+  it('Should insert a new user', async () => {
+    jest.spyOn(usersModel, 'create').mockImplementationOnce(() =>
+      Promise.resolve({
+        _id: 'some id',
+        name: 'some name',
+        pass: 'some pass',
+      } as any)
+    );
+
+    const newUser = await usersService.create({
+      name: 'some name',
+      pass: 'some pass',
+    });
+    expect(newUser).toEqual(true);
+  });
 });
