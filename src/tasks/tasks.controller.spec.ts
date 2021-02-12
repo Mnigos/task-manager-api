@@ -3,6 +3,7 @@ import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 import { ITask } from './dto/task.interface';
 import { TaskDoc } from './dto/task-doc.interface';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 const mockUser: ITask = {
   userId: 'some user id',
@@ -55,7 +56,15 @@ describe('Tasks Controller', () => {
     tasksController = app.get<TasksController>(TasksController);
   });
 
-  it('should be defined', () => {
+  it('Should be defined', () => {
     expect(tasksController).toBeDefined();
+  });
+
+  it('Should return all tasks', () => {
+    expect(tasksController.getAll()).resolves.toEqual([
+      { userId: 'some user id', name: 'some name' },
+      { userId: 'some second user id', name: 'some second name' },
+      { userId: 'some third user id', name: 'some third name' },
+    ]);
   });
 });
