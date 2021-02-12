@@ -45,4 +45,4 @@ $ yarn test:cov:total
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This repo is [MIT licensed](LICENSE).
