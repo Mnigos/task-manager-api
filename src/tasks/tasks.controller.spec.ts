@@ -77,4 +77,14 @@ describe('Tasks Controller', () => {
       { _id: 'some other id', userId: 'some user id', name: 'some name' },
     ]);
   });
+
+  it('Should return one task by name', () => {
+    expect(tasksController.getById('some name')).resolves.toEqual([
+      { _id: 'some id', userId: 'some user id', name: 'some name' },
+    ]);
+
+    expect(tasksController.getById('some other name')).resolves.toEqual([
+      { _id: 'some id', userId: 'some user id', name: 'some other name' },
+    ]);
+  });
 });
