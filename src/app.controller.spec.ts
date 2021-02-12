@@ -1,22 +1,55 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppModule } from './app.module';
+import { AuthService } from './auth/auth.service';
+import { IUser } from './users/dto/user.interface';
+
+const mockUser: IUser = {
+  name: 'some user nickname',
+  pass: 'user password',
+};
 
 describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            register: jest
+              .fn()
+              .mockImplementation((user: IUser) =>
+                Promise.resolve({ _id: 'a uuid', ...user })
+              ),
+            login: jest
+              .fn()
+              .mockImplementation(() =>
+                Promise.resolve({ access_token: 'some token' })
+              ),
+          },
+        },
+      ],
     }).compile();
 
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('App Controller', () => {
+    it('Should register user', () => {
+      expect(appController.register(mockUser)).resolves.toEqual({
+        _id: 'a uuid',
+        ...mockUser,
+      });
+    });
+
+    it('Should login user and return token', () => {
+      expect(appController.login(mockUser)).resolves.toEqual({
+        access_token: 'some token',
+      });
     });
   });
 });
