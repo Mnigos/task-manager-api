@@ -5,6 +5,7 @@ import { IUser } from './dto/user.interface';
 import { createMock } from '@golevelup/nestjs-testing';
 import { Model, Query } from 'mongoose';
 import { UserDoc } from './dto/user-doc.interface';
+import { Provider } from '@nestjs/common';
 
 const mockUser: (id?: string, name?: string, pass?: string) => IUser = (
   id = 'a uuid',
@@ -19,22 +20,16 @@ const mockUser: (id?: string, name?: string, pass?: string) => IUser = (
 };
 
 const mockUserDoc: (mock?: {
-  id?: string;
   name?: string;
   pass?: string;
-}) => Partial<UserDoc> = (mock?: {
-  id: string;
-  name: string;
-  pass: string;
-}) => {
+}) => Partial<UserDoc> = (mock?: { name: string; pass: string }) => {
   return {
-    _id: mock?.id || 'a uuid',
     name: mock?.name || 'some name',
     pass: mock?.pass || 'some pass',
   };
 };
 
-const mockUserArra: IUser[] = [
+const mockUserArray: IUser[] = [
   mockUser(),
   mockUser('a uuid', 'some other name', 'some other pass'),
   mockUser('a uuid', 'name', 'pass'),
@@ -43,11 +38,10 @@ const mockUserArra: IUser[] = [
 const mockUserDocArray = [
   mockUserDoc(),
   mockUserDoc({
-    id: 'a uuid',
     name: 'some other name',
     pass: 'some other pass',
   }),
-  mockUserDoc({ id: 'a uuid', name: 'name', pass: 'pass' }),
+  mockUserDoc({ name: 'name', pass: 'pass' }),
 ];
 
 describe('Users Service', () => {
@@ -84,5 +78,11 @@ describe('Users Service', () => {
 
   it('Should be defined', () => {
     expect(usersService).toBeDefined();
+  });
+
+  it('Should return all users', async () => {
+    jest.spyOn(usersModel, 'find').mockReturnValue({
+      exec: jest.fn().mockResolvedValueOnce(mockUserDocArray),
+    } as any);
   });
 });
