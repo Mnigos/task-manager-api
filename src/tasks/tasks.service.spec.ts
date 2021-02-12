@@ -93,4 +93,16 @@ describe('Tasks Service', () => {
     const tasks = await tasksService.getAll();
     expect(tasks).toEqual(mockTaskArray);
   });
+
+  it('Should return one task by id', async () => {
+    jest.spyOn(tasksModel, 'findOne').mockReturnValue(
+      createMock<DocumentQuery<TaskDoc, TaskDoc>>({
+        exec: jest.fn().mockResolvedValueOnce(mockTaskDoc()),
+      })
+    );
+
+    const findMockTask = mockTask();
+    const foundTask = await tasksService.getOneById('a uuid');
+    expect(foundTask).toEqual(findMockTask);
+  });
 });
