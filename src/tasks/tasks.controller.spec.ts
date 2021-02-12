@@ -55,9 +55,7 @@ describe('Tasks Controller', () => {
     tasksController = app.get<TasksController>(TasksController);
   });
 
-  describe('App Controller', () => {
-    it('should be defined', () => {
-      expect(tasksController).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(tasksController).toBeDefined();
   });
 });
