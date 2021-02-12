@@ -117,4 +117,25 @@ describe('Tasks Service', () => {
     const foundTask = await tasksService.getOneById('some name');
     expect(foundTask).toEqual(findMockTask);
   });
+
+  it('Should inset a new task', async () => {
+    jest.spyOn(tasksModel, 'create').mockImplementationOnce(() =>
+      Promise.resolve({
+        userId: 'a user id',
+        _id: 'a uuid',
+        name: 'some name',
+      } as any)
+    );
+
+    const newTask = await tasksService.create({
+      userId: 'a user id',
+      name: 'some name',
+    });
+
+    expect(newTask).toEqual({
+      userId: 'a user id',
+      _id: 'a uuid',
+      name: 'some name',
+    });
+  });
 });
