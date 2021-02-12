@@ -87,4 +87,16 @@ describe('Tasks Controller', () => {
       { _id: 'some id', userId: 'some user id', name: 'some other name' },
     ]);
   });
+
+  it('Should return one task by id', () => {
+    const newTask: CreateTaskDto = {
+      userId: 'some user id',
+      name: 'some name',
+    };
+
+    expect(tasksController.create(newTask)).resolves.toEqual({
+      _id: 'a uuid',
+      ...newTask,
+    });
+  });
 });
