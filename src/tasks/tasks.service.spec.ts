@@ -28,7 +28,7 @@ const mockTaskDoc: (mock?: {
   name: string;
 }) => {
   return {
-    userID: mock?.userId || 'some userId',
+    userId: mock?.userId || 'a user id',
     id: mock?.id || 'a uuid',
     name: mock?.name || 'some name',
   };
@@ -36,17 +36,17 @@ const mockTaskDoc: (mock?: {
 
 const mockTaskArray: ITask[] = [
   mockTask(),
-  mockTask('a uuid', 'some other name', 'some other userId'),
-  mockTask('a uuid', 'name', 'userId'),
+  mockTask('some other userId', 'a uuid', 'some other name'),
+  mockTask('userId', 'a uuid', 'name'),
 ];
 
 const mockTaskDocArray = [
   mockTaskDoc(),
   mockTaskDoc({
-    name: 'some other name',
     userId: 'some other userId',
+    name: 'some other name',
   }),
-  mockTaskDoc({ name: 'name', userId: 'userId' }),
+  mockTaskDoc({ userId: 'userId', name: 'name' }),
 ];
 
 describe('Tasks Service', () => {
@@ -83,5 +83,14 @@ describe('Tasks Service', () => {
 
   it('Should be defined', () => {
     expect(tasksService).toBeDefined();
+  });
+
+  it('Should return all tasks', async () => {
+    jest.spyOn(tasksModel, 'find').mockReturnValue({
+      exec: jest.fn().mockResolvedValueOnce(mockTaskDocArray),
+    } as any);
+
+    const tasks = await tasksService.getAll();
+    expect(tasks).toEqual(mockTaskArray);
   });
 });
