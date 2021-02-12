@@ -105,4 +105,16 @@ describe('Tasks Service', () => {
     const foundTask = await tasksService.getOneById('a uuid');
     expect(foundTask).toEqual(findMockTask);
   });
+
+  it('Should return one task by name', async () => {
+    jest.spyOn(tasksModel, 'findOne').mockReturnValue(
+      createMock<DocumentQuery<TaskDoc, TaskDoc>>({
+        exec: jest.fn().mockResolvedValueOnce(mockTaskDoc()),
+      })
+    );
+
+    const findMockTask = mockTask();
+    const foundTask = await tasksService.getOneById('some name');
+    expect(foundTask).toEqual(findMockTask);
+  });
 });
