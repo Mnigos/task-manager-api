@@ -106,4 +106,10 @@ describe('Tasks Controller', () => {
       ...newTask,
     });
   });
+
+  it('Should delete task', () => {
+    expect(tasksController.delete('a uuid that exists')).resolves.toEqual({
+      deleted: true,
+    });
+  });
 });
