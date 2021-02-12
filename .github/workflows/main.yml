@@ -58,4 +58,6 @@ jobs:
       - name: Collect coverage
         env: 
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: yarn codecov
+        run: |
+          yarn jest --forceExit --coverage
+          yarn codecov
