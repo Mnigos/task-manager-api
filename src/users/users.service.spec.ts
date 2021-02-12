@@ -19,10 +19,16 @@ const mockUser: (id?: string, name?: string, pass?: string) => IUser = (
 };
 
 const mockUserDoc: (mock?: {
+  id?: string;
   name?: string;
   pass?: string;
-}) => Partial<UserDoc> = (mock?: { name: string; pass: string }) => {
+}) => Partial<UserDoc> = (mock?: {
+  id: string;
+  name: string;
+  pass: string;
+}) => {
   return {
+    id: mock?.id || 'a uuid',
     name: mock?.name || 'some name',
     pass: mock?.pass || 'some pass',
   };
@@ -83,6 +89,9 @@ describe('Users Service', () => {
     jest.spyOn(usersModel, 'find').mockReturnValue({
       exec: jest.fn().mockResolvedValueOnce(mockUserDocArray),
     } as any);
+
+    const users = await usersService.getAll();
+    expect(users).toEqual(mockUserArray);
   });
 
   it('Should return one user by id', async () => {
@@ -91,5 +100,9 @@ describe('Users Service', () => {
         exec: jest.fn().mockResolvedValueOnce(mockUserDoc()),
       })
     );
+
+    const findMockUser = mockUser();
+    const foundUser = await usersService.getOneById('a uuid');
+    expect(foundUser).toEqual(findMockUser);
   });
 });
