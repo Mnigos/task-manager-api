@@ -4,7 +4,7 @@ API using TypeScript, Nest.js to task manager android application
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://forthebadge.com)
 
-![CI](https://github.com/MoneyIgos/task-manager-api/workflows/CI/badge.svg)
+![ci](https://github.com/Mnigos/task-manager-api/workflows/ci/badge.svg)
 [![codecov](https://codecov.io/gh/MoneyIgos/task-manager-api/branch/master/graph/badge.svg?token=N2HMW7UTBG)](https://codecov.io/gh/MoneyIgos/task-manager-api)
 ![dependency](https://david-dm.org/MoneyIgos/task-manager-api.svg)
 
