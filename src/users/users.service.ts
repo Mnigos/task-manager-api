@@ -16,8 +16,8 @@ export class UsersService {
     return users;
   }
 
-  async getOneById(_id: string): Promise<IUser | HttpStatus.BAD_REQUEST> {
-    const user = await this.UserModel.findOne({ _id }).exec();
+  async getOneById(id: string): Promise<IUser | HttpStatus.BAD_REQUEST> {
+    const user = await this.UserModel.findOne({ _id: id }).exec();
 
     if (!user) return HttpStatus.BAD_REQUEST;
 
