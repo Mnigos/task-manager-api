@@ -37,12 +37,12 @@ export class TasksService {
   }
 
   async update(task: ITask) {
-    const { _id } = task;
+    const { id } = task;
 
-    if (!_id) return HttpStatus.BAD_REQUEST;
+    if (!id) return HttpStatus.BAD_REQUEST;
 
-    this.TaskModel.update({ _id }, task);
-    const foundTask = await this.TaskModel.findOne({ _id }).exec();
+    this.TaskModel.update({ _id: id }, task);
+    const foundTask = await this.TaskModel.findById(id).exec();
 
     return foundTask;
   }
