@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
-import { ITask } from './dto/task.interface';
 import { TaskDoc } from './dto/task-doc.interface';
 import { CreateTaskDto } from './dto/create-task.dto';
 
@@ -23,7 +22,7 @@ describe('Tasks Controller', () => {
             getOneById: jest.fn().mockImplementation((id: string) =>
               Promise.resolve({
                 userId: 'Some user id',
-                _id: id,
+                id,
                 name: 'some name',
               })
             ),
@@ -35,12 +34,12 @@ describe('Tasks Controller', () => {
             create: jest
               .fn()
               .mockImplementation((task: TaskDoc) =>
-                Promise.resolve({ _id: 'a uuid', ...task })
+                Promise.resolve({ id: 'a uuid', ...task })
               ),
             update: jest
               .fn()
               .mockImplementation((task: TaskDoc) =>
-                Promise.resolve({ _id: 'a uuid', ...task })
+                Promise.resolve({ id: 'a uuid', ...task })
               ),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
@@ -65,21 +64,21 @@ describe('Tasks Controller', () => {
 
   it('Should return one task by id', () => {
     expect(tasksController.getById('some id')).resolves.toEqual([
-      { _id: 'some id', userId: 'some user id', name: 'some name' },
+      { id: 'some id', userId: 'some user id', name: 'some name' },
     ]);
 
     expect(tasksController.getById('some other id')).resolves.toEqual([
-      { _id: 'some other id', userId: 'some user id', name: 'some name' },
+      { id: 'some other id', userId: 'some user id', name: 'some name' },
     ]);
   });
 
   it('Should return one task by name', () => {
     expect(tasksController.getById('some name')).resolves.toEqual([
-      { _id: 'some id', userId: 'some user id', name: 'some name' },
+      { id: 'some id', userId: 'some user id', name: 'some name' },
     ]);
 
     expect(tasksController.getById('some other name')).resolves.toEqual([
-      { _id: 'some id', userId: 'some user id', name: 'some other name' },
+      { id: 'some id', userId: 'some user id', name: 'some other name' },
     ]);
   });
 
@@ -90,7 +89,7 @@ describe('Tasks Controller', () => {
     };
 
     expect(tasksController.create(newTask)).resolves.toEqual({
-      _id: 'a uuid',
+      id: 'a uuid',
       ...newTask,
     });
   });
@@ -102,7 +101,7 @@ describe('Tasks Controller', () => {
     };
 
     expect(tasksController.create(newTask)).resolves.toEqual({
-      _id: 'a uuid',
+      id: 'a uuid',
       ...newTask,
     });
   });

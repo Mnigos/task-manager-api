@@ -6,33 +6,21 @@ import { createMock } from '@golevelup/nestjs-testing';
 import { DocumentQuery, Model } from 'mongoose';
 import { TaskDoc } from './dto/task-doc.interface';
 
-const mockTask: (userId?: string, id?: string, name?: string) => ITask = (
+const mockTask = (
   userId = 'a user id',
   id = 'a uuid',
   name = 'some name'
-) => {
-  return {
-    userId,
-    id,
-    name,
-  };
-};
+): ITask => ({
+  userId,
+  id,
+  name,
+});
 
-const mockTaskDoc: (mock?: {
-  userId?: string;
-  id?: string;
-  name?: string;
-}) => Partial<TaskDoc> = (mock?: {
-  userId: string;
-  id: string;
-  name: string;
-}) => {
-  return {
-    userId: mock?.userId || 'a user id',
-    id: mock?.id || 'a uuid',
-    name: mock?.name || 'some name',
-  };
-};
+const mockTaskDoc = (mock?: Partial<ITask>): Partial<TaskDoc> => ({
+  userId: mock?.userId || 'a user id',
+  id: mock?.id || 'a uuid',
+  name: mock?.name || 'some name',
+});
 
 const mockTaskArray: ITask[] = [
   mockTask(),
@@ -122,7 +110,7 @@ describe('Tasks Service', () => {
     jest.spyOn(tasksModel, 'create').mockImplementationOnce(() =>
       Promise.resolve({
         userId: 'a user id',
-        _id: 'a uuid',
+        id: 'a uuid',
         name: 'some name',
       } as any)
     );
@@ -134,7 +122,7 @@ describe('Tasks Service', () => {
 
     expect(newTask).toEqual({
       userId: 'a user id',
-      _id: 'a uuid',
+      id: 'a uuid',
       name: 'some name',
     });
   });
@@ -150,7 +138,7 @@ describe('Tasks Service', () => {
 
     const updatedTask = await tasksService.update({
       userId: 'a user id',
-      _id: 'a uuid',
+      id: 'a uuid',
       name: 'some other name',
     });
     expect(updatedTask).toEqual(
