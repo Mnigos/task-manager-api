@@ -6,33 +6,21 @@ import { createMock } from '@golevelup/nestjs-testing';
 import { DocumentQuery, Model } from 'mongoose';
 import { UserDoc } from './dto/user-doc.interface';
 
-const mockUser: (id?: string, name?: string, pass?: string) => IUser = (
+const mockUser = (
   id = 'a uuid',
   name = 'some name',
   pass = 'some pass'
-) => {
-  return {
-    id,
-    name,
-    pass,
-  };
-};
+): IUser => ({
+  id,
+  name,
+  pass,
+});
 
-const mockUserDoc: (mock?: {
-  id?: string;
-  name?: string;
-  pass?: string;
-}) => Partial<UserDoc> = (mock?: {
-  id: string;
-  name: string;
-  pass: string;
-}) => {
-  return {
-    id: mock?.id || 'a uuid',
-    name: mock?.name || 'some name',
-    pass: mock?.pass || 'some pass',
-  };
-};
+const mockUserDoc = (mock?: Partial<IUser>): Partial<UserDoc> => ({
+  id: mock?.id || 'a uuid',
+  name: mock?.name || 'some name',
+  pass: mock?.pass || 'some pass',
+});
 
 const mockUserArray: IUser[] = [
   mockUser(),
