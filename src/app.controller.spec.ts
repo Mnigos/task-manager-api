@@ -10,12 +10,11 @@ const mockUser: IUser = {
 };
 
 // Some errors with appController
-describe.skip('AppController', () => {
+describe('App Controller', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
       controllers: [AppController],
       providers: [
         {
@@ -26,11 +25,7 @@ describe.skip('AppController', () => {
               .mockImplementation((user: IUser) =>
                 Promise.resolve({ _id: 'a uuid', ...user })
               ),
-            login: jest
-              .fn()
-              .mockImplementation(() =>
-                Promise.resolve({ access_token: 'some token' })
-              ),
+            login: jest.fn().mockResolvedValue({ access_token: 'some token' }),
           },
         },
       ],
