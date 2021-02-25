@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -26,13 +28,13 @@ export class TasksController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
-  async getById(@Param('id') id: string) {
+  async getById(@Param('id') id: string): Promise<ITask | HttpStatus> {
     return this.tasksService.getOneById(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/name')
-  async getByName(@Query('name') name: string) {
+  async getByName(@Query('name') name: string): Promise<ITask | HttpStatus> {
     return this.tasksService.getOneByName(name);
   }
 
@@ -44,7 +46,7 @@ export class TasksController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('/update')
-  async update(@Body() task: CreateTaskDto) {
+  async update(@Body() task: CreateTaskDto): Promise<ITask | HttpStatus> {
     return this.tasksService.update(task);
   }
 

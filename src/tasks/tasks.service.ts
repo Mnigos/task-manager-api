@@ -15,7 +15,7 @@ export class TasksService {
     return tasks;
   }
 
-  async getOneById(_id: string) {
+  async getOneById(_id: string): Promise<ITask | HttpStatus> {
     const task = await this.TaskModel.findOne({ _id }).exec();
 
     if (!task) return HttpStatus.BAD_REQUEST;
@@ -23,7 +23,7 @@ export class TasksService {
     return task;
   }
 
-  async getOneByName(name: string) {
+  async getOneByName(name: string): Promise<ITask | HttpStatus> {
     const task = await this.TaskModel.findOne({ name }).exec();
 
     if (!task) return HttpStatus.BAD_REQUEST;
@@ -36,7 +36,7 @@ export class TasksService {
     return newTask;
   }
 
-  async update(task: ITask) {
+  async update(task: ITask): Promise<ITask | HttpStatus> {
     const { id } = task;
 
     if (!id) return HttpStatus.BAD_REQUEST;
