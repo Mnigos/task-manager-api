@@ -8,7 +8,6 @@ const mockUser: IUser = {
   pass: 'user password',
 };
 
-// Some errors with appController
 describe('App Controller', () => {
   let appController: AppController;
 
@@ -22,7 +21,7 @@ describe('App Controller', () => {
             register: jest
               .fn()
               .mockImplementation((user: IUser) =>
-                Promise.resolve({ _id: 'a uuid', ...user })
+                Promise.resolve({ id: 'a uuid', ...user })
               ),
             login: jest.fn().mockResolvedValue({ access_token: 'some token' }),
           },
@@ -33,18 +32,16 @@ describe('App Controller', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('App Controller', () => {
-    it('Should register user', () => {
-      expect(appController.register(mockUser)).resolves.toEqual({
-        id: 'a uuid',
-        ...mockUser,
-      });
+  it('Should register user', () => {
+    expect(appController.register(mockUser)).resolves.toEqual({
+      id: 'a uuid',
+      ...mockUser,
     });
+  });
 
-    it('Should login user and return token', () => {
-      expect(appController.login(mockUser)).resolves.toEqual({
-        access_token: 'some token',
-      });
+  it('Should login user and return token', () => {
+    expect(appController.login(mockUser)).resolves.toEqual({
+      access_token: 'some token',
     });
   });
 });
