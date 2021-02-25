@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppModule } from './app.module';
 import { AuthService } from './auth/auth.service';
 import { IUser } from './users/dto/user.interface';
 
@@ -37,7 +36,7 @@ describe('App Controller', () => {
   describe('App Controller', () => {
     it('Should register user', () => {
       expect(appController.register(mockUser)).resolves.toEqual({
-        _id: 'a uuid',
+        id: 'a uuid',
         ...mockUser,
       });
     });
