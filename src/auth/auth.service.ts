@@ -18,10 +18,10 @@ export class AuthService {
       foundedUser !== HttpStatus.BAD_REQUEST &&
       bcrypt.compare(pass, foundedUser.pass)
     ) {
-      const { _id, name, createdAt } = foundedUser;
+      const { id, name, createdAt } = foundedUser;
 
       return {
-        _id,
+        id,
         name,
         createdAt,
       };
@@ -31,10 +31,10 @@ export class AuthService {
   }
 
   async login(user: IUser): Promise<any> {
-    const { name, _id } = user;
+    const { name, id } = user;
 
     return {
-      access_token: this.jwtService.sign({ name, sub: _id }),
+      access_token: this.jwtService.sign({ name, sub: id }),
     };
   }
 

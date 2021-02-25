@@ -16,7 +16,7 @@ export class UsersService {
     return users;
   }
 
-  async getOneById(id: string): Promise<IUser | HttpStatus> {
+  async getOneById(id: string): Promise<IUser | HttpStatus.BAD_REQUEST> {
     const user = await this.UserModel.findOne({ _id: id }).exec();
 
     if (!user) return HttpStatus.BAD_REQUEST;
@@ -24,7 +24,7 @@ export class UsersService {
     return user;
   }
 
-  async getOneByName(name: string): Promise<IUser | HttpStatus> {
+  async getOneByName(name: string): Promise<IUser | HttpStatus.BAD_REQUEST> {
     const user = await this.UserModel.findOne({ name }).exec();
 
     if (!user) return HttpStatus.BAD_REQUEST;
