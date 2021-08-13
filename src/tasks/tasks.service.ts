@@ -1,8 +1,8 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { TaskDoc } from './dto/task-doc.interface';
-import { ITask } from './dto/task.interface';
+import { Injectable, HttpStatus } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+import { TaskDoc } from './dto/task-doc.interface'
+import { ITask } from './dto/task.interface'
 
 @Injectable()
 export class TasksService {
@@ -11,50 +11,50 @@ export class TasksService {
   ) {}
 
   async getAll(): Promise<ITask[]> {
-    const tasks = await this.TaskModel.find().exec();
-    return tasks;
+    const tasks = await this.TaskModel.find().exec()
+    return tasks
   }
 
   async getOneById(_id: string): Promise<ITask | HttpStatus> {
-    const task = await this.TaskModel.findOne({ _id }).exec();
+    const task = await this.TaskModel.findOne({ _id }).exec()
 
-    if (!task) return HttpStatus.BAD_REQUEST;
+    if (!task) return HttpStatus.BAD_REQUEST
 
-    return task;
+    return task
   }
 
   async getOneByName(name: string): Promise<ITask | HttpStatus> {
-    const task = await this.TaskModel.findOne({ name }).exec();
+    const task = await this.TaskModel.findOne({ name }).exec()
 
-    if (!task) return HttpStatus.BAD_REQUEST;
+    if (!task) return HttpStatus.BAD_REQUEST
 
-    return task;
+    return task
   }
 
   async create(task: ITask): Promise<ITask> {
-    const newTask = await this.TaskModel.create(task as ITask);
-    return newTask;
+    const newTask = await this.TaskModel.create(task as ITask)
+    return newTask
   }
 
   async update(task: ITask): Promise<ITask | HttpStatus> {
-    const { id } = task;
+    const { id } = task
 
-    if (!id) return HttpStatus.BAD_REQUEST;
+    if (!id) return HttpStatus.BAD_REQUEST
 
-    this.TaskModel.update({ _id: id }, task);
-    const foundTask = await this.TaskModel.findById(id).exec();
+    this.TaskModel.update({ _id: id }, task)
+    const foundTask = await this.TaskModel.findById(id).exec()
 
-    return foundTask;
+    return foundTask
   }
 
   async delete(id: string): Promise<{ deleted: boolean; message?: string }> {
-    if (!id) return { deleted: false, message: 'id is empty' };
+    if (!id) return { deleted: false, message: 'id is empty' }
 
     try {
-      await this.TaskModel.remove({ id });
-      return { deleted: true };
+      await this.TaskModel.remove({ id })
+      return { deleted: true }
     } catch (e) {
-      return { deleted: false, message: e.message };
+      return { deleted: false, message: e.message }
     }
   }
 }

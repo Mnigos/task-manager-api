@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { TaskDoc } from '../dto/task-doc.interface';
+import { Schema, model } from 'mongoose'
+import { TaskDoc } from '../dto/task-doc.interface'
 
 export const TaskSchema = new Schema({
   userId: { type: String, required: true },
@@ -8,8 +8,8 @@ export const TaskSchema = new Schema({
     type: String,
     default: () => new Date(),
   },
-});
+})
 
-const Task = model<TaskDoc>('Task', TaskSchema);
+const Task = model<TaskDoc>('Task', TaskSchema)
 
-export default Task;
+export default Task

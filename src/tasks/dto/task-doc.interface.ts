@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
+import { Document } from 'mongoose'
 
 export interface TaskDoc extends Document {
-  userId: string;
-  name: string;
-  createdAt?: Date;
+  userId: string
+  name: string
+  createdAt?: Date
 }

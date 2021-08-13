@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TasksService } from './tasks.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { ITask } from './dto/task.interface';
-import { createMock } from '@golevelup/nestjs-testing';
-import { DocumentQuery, Model } from 'mongoose';
-import { TaskDoc } from './dto/task-doc.interface';
+import { Test, TestingModule } from '@nestjs/testing'
+import { TasksService } from './tasks.service'
+import { getModelToken } from '@nestjs/mongoose'
+import { ITask } from './dto/task.interface'
+import { createMock } from '@golevelup/nestjs-testing'
+import { DocumentQuery, Model } from 'mongoose'
+import { TaskDoc } from './dto/task-doc.interface'
 
 const mockTask = (
   userId = 'a user id',
@@ -14,19 +14,19 @@ const mockTask = (
   userId,
   id,
   name,
-});
+})
 
 const mockTaskDoc = (mock?: Partial<ITask>): Partial<TaskDoc> => ({
   userId: mock?.userId || 'a user id',
   id: mock?.id || 'a uuid',
   name: mock?.name || 'some name',
-});
+})
 
 const mockTaskArray: ITask[] = [
   mockTask(),
   mockTask('some other userId', 'a uuid', 'some other name'),
   mockTask('userId', 'a uuid', 'name'),
-];
+]
 
 const mockTaskDocArray = [
   mockTaskDoc(),
@@ -35,11 +35,11 @@ const mockTaskDocArray = [
     name: 'some other name',
   }),
   mockTaskDoc({ userId: 'userId', name: 'name' }),
-];
+]
 
 describe('Tasks Service', () => {
-  let tasksService: TasksService;
-  let tasksModel: Model<TaskDoc>;
+  let tasksService: TasksService
+  let tasksModel: Model<TaskDoc>
 
   beforeEach(async () => {
     const tasksModule: TestingModule = await Test.createTestingModule({
@@ -59,52 +59,52 @@ describe('Tasks Service', () => {
           },
         },
       ],
-    }).compile();
+    }).compile()
 
-    tasksService = tasksModule.get<TasksService>(TasksService);
-    tasksModel = tasksModule.get<Model<TaskDoc>>(getModelToken('Tasks'));
-  });
+    tasksService = tasksModule.get<TasksService>(TasksService)
+    tasksModel = tasksModule.get<Model<TaskDoc>>(getModelToken('Tasks'))
+  })
 
   afterEach(() => {
-    jest.clearAllMocks();
-  });
+    jest.clearAllMocks()
+  })
 
   it('Should be defined', () => {
-    expect(tasksService).toBeDefined();
-  });
+    expect(tasksService).toBeDefined()
+  })
 
   it('Should return all tasks', async () => {
     jest.spyOn(tasksModel, 'find').mockReturnValue({
       exec: jest.fn().mockResolvedValueOnce(mockTaskDocArray),
-    } as any);
+    } as any)
 
-    const tasks = await tasksService.getAll();
-    expect(tasks).toEqual(mockTaskArray);
-  });
+    const tasks = await tasksService.getAll()
+    expect(tasks).toEqual(mockTaskArray)
+  })
 
   it('Should return one task by id', async () => {
     jest.spyOn(tasksModel, 'findOne').mockReturnValue(
       createMock<DocumentQuery<TaskDoc, TaskDoc>>({
         exec: jest.fn().mockResolvedValueOnce(mockTaskDoc()),
       })
-    );
+    )
 
-    const findMockTask = mockTask();
-    const foundTask = await tasksService.getOneById('a uuid');
-    expect(foundTask).toEqual(findMockTask);
-  });
+    const findMockTask = mockTask()
+    const foundTask = await tasksService.getOneById('a uuid')
+    expect(foundTask).toEqual(findMockTask)
+  })
 
   it('Should return one task by name', async () => {
     jest.spyOn(tasksModel, 'findOne').mockReturnValue(
       createMock<DocumentQuery<TaskDoc, TaskDoc>>({
         exec: jest.fn().mockResolvedValueOnce(mockTaskDoc()),
       })
-    );
+    )
 
-    const findMockTask = mockTask();
-    const foundTask = await tasksService.getOneByName('some name');
-    expect(foundTask).toEqual(findMockTask);
-  });
+    const findMockTask = mockTask()
+    const foundTask = await tasksService.getOneByName('some name')
+    expect(foundTask).toEqual(findMockTask)
+  })
 
   it('Should inset a new task', async () => {
     jest.spyOn(tasksModel, 'create').mockImplementationOnce(() =>
@@ -113,19 +113,19 @@ describe('Tasks Service', () => {
         id: 'a uuid',
         name: 'some name',
       } as any)
-    );
+    )
 
     const newTask = await tasksService.create({
       userId: 'a user id',
       name: 'some name',
-    });
+    })
 
     expect(newTask).toEqual({
       userId: 'a user id',
       id: 'a uuid',
       name: 'some name',
-    });
-  });
+    })
+  })
 
   it.skip('Should update a task', async () => {
     jest.spyOn(tasksModel, 'update').mockReturnValue(
@@ -134,30 +134,30 @@ describe('Tasks Service', () => {
           .fn()
           .mockResolvedValueOnce(mockTaskDoc({ name: 'some other name' })),
       })
-    );
+    )
 
     const updatedTask = await tasksService.update({
       userId: 'a user id',
       id: 'a uuid',
       name: 'some other name',
-    });
+    })
     expect(updatedTask).toEqual(
       mockTask('a user id', 'a uuid', 'some other name')
-    );
-  });
+    )
+  })
 
   it('should delete a cat successfully', async () => {
-    jest.spyOn(tasksModel, 'remove').mockResolvedValueOnce(true as any);
-    expect(await tasksService.delete('a bad id')).toEqual({ deleted: true });
-  });
+    jest.spyOn(tasksModel, 'remove').mockResolvedValueOnce(true as any)
+    expect(await tasksService.delete('a bad id')).toEqual({ deleted: true })
+  })
 
   it('should not delete a cat', async () => {
     jest
       .spyOn(tasksModel, 'remove')
-      .mockRejectedValueOnce(new Error('Bad delete'));
+      .mockRejectedValueOnce(new Error('Bad delete'))
     expect(await tasksService.delete('a bad id')).toEqual({
       deleted: false,
       message: 'Bad delete',
-    });
-  });
-});
+    })
+  })
+})
