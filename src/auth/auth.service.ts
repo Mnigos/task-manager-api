@@ -1,44 +1,57 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcrypt';
-import { IUser } from '../users/dto/user.interface';
-import { JwtService } from '@nestjs/jwt';
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { UsersService } from '../users/users.service'
+import { CreateUserDto } from '../users/interfaces/createUser.interface'
+import { Credentials } from './interfaces/credentials.interface'
+import * as bcrypt from 'bcrypt'
+import { JwtService } from '@nestjs/jwt'
+import { User } from 'src/users/interfaces/user.interface'
+import { UserToReturn } from './interfaces/userToReturn.interface'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
   ) {}
 
-  async validateUser(user: IUser): Promise<any> {
-    const { name, pass } = user;
-    const foundedUser = await this.usersService.getOneByName(name);
-    if (
-      foundedUser !== HttpStatus.BAD_REQUEST &&
-      bcrypt.compare(pass, foundedUser.pass)
-    ) {
-      const { id, name, createdAt } = foundedUser;
+  async validateUser(user: User): Promise<UserToReturn | boolean> {
+    const { name, pass } = user
+    const foundedUser = await this.usersService.getOneByName(name)
 
-      return {
-        id,
-        name,
-        createdAt,
-      };
-    }
+    if (!foundedUser || !bcrypt.compare(pass, foundedUser.pass)) return false
 
-    return null;
-  }
-
-  async login(user: IUser): Promise<any> {
-    const { name, id } = user;
+    const { _id, email, createdAt } = foundedUser
 
     return {
-      access_token: this.jwtService.sign({ name, sub: id }),
-    };
+      _id,
+      name,
+      email,
+      createdAt,
+    }
   }
 
-  async register(user: IUser): Promise<any> {
-    return await this.usersService.create(user);
+  async register(user: CreateUserDto): Promise<boolean | { access_token: string }> {
+    const registeredStatus = await this.usersService.create(user)
+
+    if (!registeredStatus) return registeredStatus
+
+    return await this.login({ nameOrEmail: user.name, pass: user.pass } as Credentials)
+  }
+
+  async login(credentials: Credentials): Promise<{ access_token: string }> {
+    const { nameOrEmail, pass } = credentials
+    let sub: string
+
+    if (!nameOrEmail) throw new BadRequestException('Name or Email field cannot be empty')
+    if (!pass) throw new BadRequestException('Password field cannot be empty')
+
+    const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
+
+    if (nameOrEmail.match(emailRegex)) sub = 'email'
+    sub = 'name'
+
+    return {
+      access_token: this.jwtService.sign({ name: nameOrEmail, sub }),
+    }
   }
 }

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
 import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
-import { TasksModule } from './tasks/tasks.module'
-import { AuthModule } from './auth/auth.module'
+import { AppService } from './app.service'
 import { UsersModule } from './users/users.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -12,9 +13,10 @@ import { UsersModule } from './users/users.module'
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    TasksModule,
-    AuthModule,
     UsersModule,
+    AuthModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
