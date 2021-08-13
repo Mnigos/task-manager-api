@@ -73,14 +73,5 @@
     "ts-node": "^10.1.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn --cwd packages/api lint-staged && yarn --cwd packages/www lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": "eslint"
   }
 }
