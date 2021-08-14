@@ -45,8 +45,8 @@ export class TasksService {
     return foundTask
   }
 
-  async delete(id: string): Promise<{ deleted: boolean; message?: string }> {
-    if (!id) return { deleted: false, message: 'id is empty' }
+  async delete(_id: string): Promise<{ deleted: boolean; message?: string }> {
+    if (!_id) return { deleted: false, message: 'id is empty' }
 
     try {
       await this.TaskModel.remove({ id })
