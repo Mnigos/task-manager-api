@@ -11,6 +11,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
       cors: true,
     })
+
     app.use(
       session({
         secret: process.env.SESSION_SECRET,
@@ -19,6 +20,8 @@ async function bootstrap() {
         coockie: { maxAge: 3600000 },
       })
     )
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     await app.listen(process.env.PORT || 3000)
   } catch {
