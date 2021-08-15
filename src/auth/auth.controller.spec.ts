@@ -28,24 +28,4 @@ describe('AuthController', () => {
   it('Should be defined', () => {
     expect(authController).toBeDefined()
   })
-
-  it('Should not register a new user cause password do not match pass regex', () => {
-    const newUser = {
-      name: 'Some name',
-      email: 'somesome.org',
-      pass: '1234',
-    }
-
-    expect(authController.register(newUser)).resolves.toEqual(400)
-  })
-
-  it('Should register a new user', () => {
-    const newUser = {
-      name: 'Some name',
-      email: 'somesome.org',
-      pass: 'gr3at@3wdsG',
-    }
-
-    expect(authController.register(newUser)).resolves.toEqual(true)
-  })
 })

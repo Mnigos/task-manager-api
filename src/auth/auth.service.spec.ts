@@ -53,16 +53,6 @@ describe('AuthService', () => {
     expect(authService).toBeDefined()
   })
 
-  it('Should register user', () => {
-    expect(authService.register(mockUser)).resolves.toEqual({
-      ...mockUser,
-    })
-  })
-
-  it('Should login a user', () => {
-    expect(authService.login(mockCredentials)).resolves.toEqual({ access_token: 'abcdedef' })
-  })
-
   it('Should validate a user', () => {
     expect(authService.validateUser(mockUser)).resolves.toEqual({
       _id: mockUser._id,
