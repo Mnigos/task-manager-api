@@ -14,20 +14,16 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async validateUser(user: User): Promise<UserToReturn | boolean> {
-    const { name, pass } = user
+  async validateUser(user: User): Promise<UserToReturn | null> {
+    const { name } = user
     const foundedUser = await this.usersService.getOneByName(name)
 
-    if (!foundedUser || !bcrypt.compare(pass, foundedUser.pass)) return false
+    if (!foundedUser || !bcrypt.compare(user.pass, foundedUser.pass)) return null
 
-    const { _id, email, createdAt } = foundedUser
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { pass, ...userWithoutPass } = foundedUser
 
-    return {
-      _id,
-      name,
-      email,
-      createdAt,
-    }
+    return userWithoutPass
   }
 
   async register(user: CreateUserDto): Promise<boolean | { access_token: string }> {
